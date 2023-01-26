@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { username } from '$lib/store';
 	import { onMount } from 'svelte';
 	import type { AuthSession } from '@supabase/supabase-js';
 	import { supabase } from '$lib/supabaseClient';
@@ -8,7 +9,7 @@
 	export let session: AuthSession;
 
 	let loading = false;
-	let username: string | null = null;
+	// let username: string | null = null;
 	let website: string | null = null;
 	let avatarUrl: string | null = null;
 
@@ -28,7 +29,7 @@
 				.single();
 
 			if (data) {
-				username = data.username;
+				$username = data.username;
 				website = data.website;
 				avatarUrl = data.avatar_url;
 			}
@@ -83,32 +84,67 @@
 	}
 </script>
 
-<form use:getProfile class="form-widget" on:submit|preventDefault={updateProfile}>
-	<Avatar bind:url={avatarUrl} size={10} on:upload={updateProfile} />
+<div class="account">
+	<form use:getProfile on:submit|preventDefault={updateProfile}>
+		<Avatar bind:url={avatarUrl} size={10} on:upload={updateProfile} />
 
-	<div>
-		<label for="email">Email</label>
-		<input id="email" type="text" value={session.user.email} disabled />
-	</div>
-	<div>
-		<label for="username">Name</label>
-		<input id="username" type="text" bind:value={username} />
-	</div>
-	<div>
-		<label for="website">Website</label>
-		<input id="website" type="website" bind:value={website} />
-	</div>
+		<div>
+			<label for="email">Email</label>
+			<input id="email" type="text" value={session.user.email} disabled />
+		</div>
+		<div>
+			<label for="username">Name</label>
+			<input id="username" type="text" bind:value={$username} />
+		</div>
+		<div>
+			<label for="website">Website</label>
+			<input id="website" type="website" bind:value={website} />
+		</div>
 
-	<div>
-		<input
-			type="submit"
-			class="button block primary"
-			value={loading ? 'Loading...' : 'Update'}
-			disabled={loading}
-		/>
-	</div>
+		<div>
+			<input
+				type="submit"
+				class="button"
+				value={loading ? 'Loading...' : 'Update'}
+				disabled={loading}
+			/>
+		</div>
 
-	<div>
-		<button class="button block" on:click={signOut} disabled={loading}>Sign Out</button>
-	</div>
-</form>
+		<div>
+			<button class="button" on:click={signOut} disabled={loading}>Sign Out</button>
+		</div>
+	</form>
+</div>
+
+<style>
+	.account {
+		min-height: 100vh;
+		min-width: 100vw;
+		display: grid;
+		place-items: center;
+	}
+
+	form {
+		width: 80%;
+	}
+
+	form > * {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	input {
+		background-color: black;
+		border: 1px solid gray;
+		padding: 0.3rem 0.9rem;
+		border-radius: 3px;
+		text-align: center;
+		width: 80%;
+	}
+
+	label {
+		margin-top: 1rem;
+		margin-bottom: 0.5rem;
+	}
+</style>

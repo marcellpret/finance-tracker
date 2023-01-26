@@ -1,20 +1,14 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { supabase } from '$lib/supabaseClient';
-	let expenses:
-		| {
-				ammount: number;
-				created_at: Date;
-				date: string;
-				entry: string;
-				id: number;
-				category: string;
-		  }[]
-		| null = [];
+	import ExpenseItem from '$lib/components/ExpenseItem.svelte';
+	import type { PageData } from '../home/$types';
+	import { expenses } from '$lib/store';
+	import AddExpense from '$lib/components/AddExpense.svelte';
 
-	let entry: String;
-	let ammount: Number;
-	let date: Date;
+	export let data: PageData;
+
+	$expenses = data.tableData;
+
+	let totalExpenses: number = sumTotalExpenses();
 
 	const categoryIcons: {} = {
 		restaurant: '🍲',
@@ -24,88 +18,30 @@
 		gifts: '🎁'
 	};
 
-	onMount(async () => {
-		let { data, error } = await supabase.from('expenses').select('*');
-		if (error) console.log('Error in Get Expenses: ', error);
-		expenses = data;
-	});
-
-	async function addExpense() {
-		const { data, error } = await supabase
-			.from('expenses')
-			.insert([{ ammount, date, entry }])
-			.select('*');
-
-		if (error) console.log('Error in addExpense: ', error);
-		expenses = [...expenses, data && data[0]];
+	function sumTotalExpenses() {
+		let total: number = 0;
+		$expenses?.forEach((expense) => {
+			total += expense.ammount;
+		});
+		return total;
 	}
 </script>
 
 <div class="table">
-	{#each expenses as expense}
-		<div class="row">
-			<div class="cell">{expense.entry}</div>
-			<div class="cell right-aligned">{expense.ammount} $</div>
-			<div class="cell">{expense.date}</div>
-			<div class="cell lighter-color">
-				{categoryIcons[expense.category] ? categoryIcons[expense.category] : expense.category}
-			</div>
-		</div>
+	{#each $expenses as expense}
+		<ExpenseItem info={expense} category={categoryIcons} />
 	{:else}
 		<h3>No Expenses</h3>
 	{/each}
+	Total: {totalExpenses} $
 </div>
 
-<form on:submit|preventDefault={addExpense}>
-	<div class="add-new">
-		<div>
-			<label for="entry">Where?</label>
-			<input id="entry" type="text" bind:value={entry} />
-		</div>
-		<div>
-			<label for="ammount">How much?</label>
-			<input id="ammount" type="text" bind:value={ammount} />
-		</div>
-		<div>
-			<label for="date">When?</label>
-			<input id="date" type="date" bind:value={date} />
-		</div>
-	</div>
-
-	<div>
-		<input type="submit" class="button block primary" value="Add" />
-	</div>
-</form>
+<AddExpense {data} />
 
 <style>
 	.table {
 		display: flex;
 		gap: 10px;
 		flex-direction: column;
-	}
-	.row {
-		display: grid;
-		gap: 10px;
-		grid-template-columns: 1fr 100px 150px min-content;
-	}
-
-	.cell {
-		background-color: slategray;
-		padding: 1em;
-		border-radius: 3px;
-	}
-
-	.right-aligned {
-		text-align: right;
-	}
-
-	.lighter-color {
-		background-color: gainsboro;
-	}
-
-	.add-new {
-		display: flex;
-		gap: 10px;
-		margin-block: 2em;
 	}
 </style>

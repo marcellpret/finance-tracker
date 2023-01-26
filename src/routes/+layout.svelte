@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Nav from '$lib/components/Nav.svelte';
 	import { supabase } from '$lib/supabaseClient';
 	import { invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
@@ -17,6 +18,7 @@
 	});
 </script>
 
-<div class="container" style="padding: 50px 0 100px 0">
+<div class="container">
+	<Nav />
 	<slot />
 </div>
