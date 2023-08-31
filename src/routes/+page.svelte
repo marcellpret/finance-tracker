@@ -1,5 +1,6 @@
 <script>
 	import { page } from '$app/stores';
+	import AddExpense from '$lib/components/AddExpense.svelte';
 	import Account from './Account.svelte';
 	import Auth from './Auth.svelte';
 </script>

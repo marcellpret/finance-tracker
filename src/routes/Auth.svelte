@@ -37,3 +37,9 @@
 		</div>
 	</div>
 </form>
+
+<style>
+	input {
+		color: black;
+	}
+</style>
