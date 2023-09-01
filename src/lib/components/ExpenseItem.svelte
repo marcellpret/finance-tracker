@@ -24,7 +24,7 @@
 <style>
 	.row {
 		display: grid;
-		grid-template-columns: repeat(3, 1fr) min-content;
+		grid-template-columns: 1fr max-content max-content min-content;
 		gap: 10px;
 		border-bottom: 1px dotted gray;
 		align-items: center;

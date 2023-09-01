@@ -65,12 +65,14 @@
 
 	.add-new label {
 		display: block;
+		font-size: 1.2rem;
 	}
 
 	.add-new input {
 		padding: 0.5em;
 		border-radius: 3px;
 		border: 1px solid gainsboro;
+		font-size: 1.5rem;
 	}
 
 	.add-new input:focus {
@@ -79,7 +81,8 @@
 	}
 
 	input[type='submit'] {
-		padding: 0.5em;
+		font-size: 1.5rem;
+		padding: 0.5em 1em;
 		border-radius: 3px;
 		border: 1px solid gainsboro;
 		background-color: slategray;
