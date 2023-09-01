@@ -1,6 +1,15 @@
-<script>
-	export let info;
-	export let category;
+<script lang="ts">
+	import type { Category, Expense } from '$lib/types';
+
+	export let info: Expense;
+
+	const category: Category = {
+		restaurant: '🍲',
+		groceries: '🛒',
+		tech: '🖥️',
+		clothing: '👔',
+		gifts: '🎁'
+	};
 </script>
 
 <div class="row">
@@ -17,19 +26,14 @@
 		display: grid;
 		gap: 10px;
 		grid-template-columns: 1fr 100px 150px min-content;
+		border-bottom: 1px solid var(--custom-bg-color);
 	}
 
 	.cell {
-		background-color: slategray;
-		padding: 1em;
-		border-radius: 3px;
+		padding: 0.5rem;
 	}
 
 	.right-aligned {
 		text-align: right;
-	}
-
-	.lighter-color {
-		background-color: gainsboro;
 	}
 </style>

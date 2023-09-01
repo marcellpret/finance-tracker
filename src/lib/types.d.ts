@@ -14,3 +14,10 @@ export interface Expense {
 	id: number;
 	category: string;
 }
+export interface Category {
+	restaurant: string;
+	groceries: string;
+	tech: string;
+	clothing: string;
+	gifts: string;
+}

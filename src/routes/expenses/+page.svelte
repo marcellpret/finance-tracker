@@ -10,14 +10,6 @@
 
 	let totalExpenses: number = sumTotalExpenses();
 
-	const categoryIcons: {} = {
-		restaurant: '🍲',
-		groceries: '🛒',
-		tech: '🖥️',
-		clothing: '👔',
-		gifts: '🎁'
-	};
-
 	function sumTotalExpenses() {
 		let total: number = 0;
 		$expenses?.forEach((expense) => {
@@ -29,19 +21,24 @@
 
 <div class="table">
 	{#each $expenses as expense}
-		<ExpenseItem info={expense} category={categoryIcons} />
+		<ExpenseItem info={expense} />
 	{:else}
 		<h3>No Expenses</h3>
 	{/each}
 	Total: {totalExpenses} $
 </div>
 
-<AddExpense {data} />
+<div class="add-expense"><AddExpense {data} /></div>
 
 <style>
 	.table {
 		display: flex;
 		gap: 10px;
 		flex-direction: column;
+	}
+
+	.add-expense {
+		padding: 2rem;
+		width: 100%;
 	}
 </style>
