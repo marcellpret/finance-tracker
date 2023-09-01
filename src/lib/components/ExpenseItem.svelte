@@ -15,7 +15,7 @@
 <div class="row">
 	<div class="cell">{info?.entry}</div>
 	<div class="cell right-aligned">{info?.ammount} $</div>
-	<div class="cell">{info?.date}</div>
+	<div class="cell center-aligned">{info?.date}</div>
 	<div class="cell lighter-color">
 		{category[info?.category] ? category[info?.category] : info?.category}
 	</div>
@@ -24,16 +24,22 @@
 <style>
 	.row {
 		display: grid;
+		grid-template-columns: repeat(3, 1fr) min-content;
 		gap: 10px;
-		grid-template-columns: 1fr 100px 150px min-content;
-		border-bottom: 1px solid var(--custom-bg-color);
+		border-bottom: 1px dotted gray;
+		align-items: center;
+		padding: 0 10px;
 	}
 
 	.cell {
 		padding: 0.5rem;
+		/* background-color: #ccc; */
 	}
 
 	.right-aligned {
 		text-align: right;
+	}
+	.center-aligned {
+		text-align: center;
 	}
 </style>

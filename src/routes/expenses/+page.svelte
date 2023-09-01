@@ -25,7 +25,7 @@
 	{:else}
 		<h3>No Expenses</h3>
 	{/each}
-	Total: {totalExpenses} $
+	<p>Total: {totalExpenses} $</p>
 </div>
 
 <div class="add-expense"><AddExpense {data} /></div>
@@ -40,5 +40,9 @@
 	.add-expense {
 		padding: 2rem;
 		width: 100%;
+	}
+
+	p {
+		text-align: center;
 	}
 </style>
