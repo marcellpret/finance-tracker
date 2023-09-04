@@ -1,9 +1,11 @@
+import type { ObjectId } from 'mongoose';
+
 export interface NewEntry {
 	ammount: number;
 	date: Date;
 	entry: string;
 	category: string;
-	user_id: string;
+	user_id: ObjectId;
 }
 
 interface userDataType extends PageData {

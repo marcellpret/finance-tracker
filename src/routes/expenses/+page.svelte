@@ -1,14 +1,12 @@
 <script lang="ts">
 	import ExpenseItem from '$lib/components/ExpenseItem.svelte';
-	import type { PageData } from '../home/$types';
 	import { expenses, sumAmmounts } from '$lib/store';
 	import AddExpense from '$lib/components/AddExpense.svelte';
 	import type { Expense, userDataType } from '$lib/types';
 
-	export let data: userDataType;
+	export let data;
 
-	$expenses = data.tableData;
-	console.log(data);
+	$expenses = data.data[0].expenses;
 
 	$sumAmmounts = $expenses.reduce((acc, expense) => {
 		acc += expense.ammount;
@@ -17,7 +15,9 @@
 </script>
 
 <div class="table">
+	<div class="add-expense"><AddExpense {data} /></div>
 	<section class="expenses-list">
+		<h1>Expenses</h1>
 		{#each $expenses as expense}
 			<ExpenseItem info={expense} />
 		{:else}
@@ -25,7 +25,6 @@
 		{/each}
 		<p>Total: {$sumAmmounts.toFixed(2)} $</p>
 	</section>
-	<div class="add-expense"><AddExpense {data} /></div>
 </div>
 
 <style>
@@ -42,9 +41,6 @@
 		width: 100%;
 		max-width: 600px;
 		/* margin: auto; */
-	}
-
-	.add-expense {
 	}
 
 	p {

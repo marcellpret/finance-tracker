@@ -1,0 +1,9 @@
+[
+	{
+		"name": "Shared Expenses",
+		"created_by": "64f5be3797631391c776ff9c",
+		"is_shared": false,
+		"shared_with": ["64f5be3797631391c776ff9c", "64f5be3797631391c776ff9d"],
+		"expenses": []
+	}
+]

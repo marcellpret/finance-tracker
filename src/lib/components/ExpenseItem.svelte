@@ -1,41 +1,60 @@
 <script lang="ts">
 	import type { Category, Expense } from '$lib/types';
 	import { expenses, sumAmmounts } from '$lib/store';
-	import { supabase } from '$lib/supabaseClient';
+	// import { supabase } from '$lib/supabaseClient';
 	import { categoryTypes } from '$lib/categories';
+	import { enhance } from '$app/forms';
 
-	const deleteExpense = async (id: number) => {
-		console.log('Deleting expense with id: ', id);
+	// const deleteExpense = async (id: number) => {
+	// 	console.log('Deleting expense with id: ', id);
 
-		const { data, error } = await supabase.from('expenses').delete().eq('_id', id).select();
+	// 	const { data, error } = await supabase.from('expenses').delete().eq('_id', id).select();
 
-		console.log(data);
+	// 	console.log(data);
 
-		if (error) console.log('Error in deleteExpense: ', error);
+	// 	if (error) console.log('Error in deleteExpense: ', error);
 
-		$expenses = $expenses!.filter((expense) => expense._id !== id);
+	// 	$expenses = $expenses!.filter((expense) => expense._id !== id);
+
+	// 	$sumAmmounts = $expenses.reduce((acc, expense) => {
+	// 		acc += expense.ammount;
+	// 		return acc;
+	// 	}, 0);
+	// };
+	function deleteExpense(id) {
+		$expenses = $expenses.filter((expense) => expense._id !== id);
 
 		$sumAmmounts = $expenses.reduce((acc, expense) => {
 			acc += expense.ammount;
 			return acc;
 		}, 0);
-	};
+	}
 
 	export let info: Expense;
-	console.log(info);
 </script>
 
 <div class="row">
-	<button
-		class="cell btn-delete"
-		aria-roledescription="Button to delete an expense"
-		on:click={deleteExpense(info._id)}
+	<form
+		action="?/delete"
+		use:enhance={({ formElement, formData, action }) => {
+			return async ({ result, update }) => {
+				if (result.type === 'success') {
+					deleteExpense(info._id);
+				}
+				update();
+			};
+		}}
+		method="POST"
 	>
-		x
-	</button>
+		<button class="cell btn-delete" aria-roledescription="Button to delete an expense" type="submit"
+			>x</button
+		>
+		<input type="hidden" name="expense-id" value={info._id} />
+	</form>
+
 	<div class="cell">{info?.entry}</div>
 	<div class="cell right-aligned">{info?.ammount.toFixed(2)} $</div>
-	<div class="cell center-aligned">{info?.date}</div>
+	<div class="cell center-aligned">{new Date(info?.date).toLocaleDateString()}</div>
 	<div class="cell lighter-color">
 		{categoryTypes[info?.category] ? categoryTypes[info?.category] : info?.category}
 	</div>

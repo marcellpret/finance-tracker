@@ -1,10 +1,12 @@
 <script lang="ts">
 	import { expenses, sumAmmounts } from '$lib/store';
-	import { supabase } from '$lib/supabaseClient';
 	import type { NewEntry } from '$lib/types';
+	import { enhance } from '$app/forms';
 	import { categoryTypes } from '$lib/categories';
 
 	export let data;
+
+	let date = new Date().toISOString().slice(0, 10);
 
 	let newEntry: NewEntry = {
 		ammount: null!,
@@ -14,12 +16,8 @@
 		user_id: data.session?.user.id!
 	};
 
-	async function addExpense() {
-		const { data, error } = await supabase.from('expenses').insert([newEntry]).select('*');
-
-		if (error) console.log('Error in addExpense: ', error);
-		$expenses = [...$expenses!, data![0]];
-		newEntry = { ...newEntry, ammount: null!, entry: '', category: '' };
+	function addExpense(expense) {
+		$expenses = [...$expenses!, expense];
 
 		$sumAmmounts = $expenses.reduce((acc, expense) => {
 			acc += expense.ammount;
@@ -28,19 +26,30 @@
 	}
 </script>
 
-<form on:submit|preventDefault={addExpense}>
+<form
+	method="POST"
+	action="?/create"
+	use:enhance={({ formElement, formData, action }) => {
+		return async ({ result, update }) => {
+			if (result.type === 'success') {
+				addExpense(result.data.newExpense);
+			}
+			update();
+		};
+	}}
+>
 	<div class="add-new">
 		<label for="entry">Where?</label>
-		<input id="entry" type="text" bind:value={newEntry.entry} />
+		<input id="entry" type="text" bind:value={newEntry.entry} name="entry" />
 
 		<label for="ammount">How much?</label>
-		<input id="ammount" type="number" step="0.01" bind:value={newEntry.ammount} />
+		<input id="ammount" type="number" step="0.01" name="ammount" />
 
 		<label for="date">When?</label>
-		<input id="date" type="date" bind:value={newEntry.date} />
+		<input id="date" type="date" name="date" value="2019-05-05" />
 
 		<label for="category">Category</label>
-		<input list="category-choices" id="category" name="category" bind:value={newEntry.category} />
+		<input list="category-choices" id="category" name="category" />
 
 		<datalist id="category-choices">
 			{#each Object.keys(categoryTypes) as category}
