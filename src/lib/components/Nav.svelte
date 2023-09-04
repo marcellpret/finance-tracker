@@ -1,5 +1,5 @@
 <nav>
-	<a href="/expenses">Expenses</a>
+	<a href="/admin/expenses">Expenses</a>
 	<a href="/">Profile</a>
 </nav>
 
