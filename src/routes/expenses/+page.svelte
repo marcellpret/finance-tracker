@@ -1,45 +1,46 @@
 <script lang="ts">
 	import ExpenseItem from '$lib/components/ExpenseItem.svelte';
-	import type { PageData } from '../home/$types';
-	import { expenses } from '$lib/store';
+	import { expenses, sumAmmounts } from '$lib/store';
 	import AddExpense from '$lib/components/AddExpense.svelte';
+	import type { Expense, userDataType } from '$lib/types';
 
-	export let data: PageData;
+	export let data;
 
-	$expenses = data.tableData;
+	$expenses = data.data[0].expenses;
 
-	let totalExpenses: number = sumTotalExpenses();
-
-	function sumTotalExpenses() {
-		let total: number = 0;
-		$expenses?.forEach((expense) => {
-			total += expense.ammount;
-		});
-		return total;
-	}
+	$sumAmmounts = $expenses.reduce((acc, expense) => {
+		acc += expense.ammount;
+		return acc;
+	}, 0);
 </script>
 
 <div class="table">
-	{#each $expenses as expense}
-		<ExpenseItem info={expense} />
-	{:else}
-		<h3>No Expenses</h3>
-	{/each}
-	<p>Total: {totalExpenses} $</p>
+	<div class="add-expense"><AddExpense {data} /></div>
+	<section class="expenses-list">
+		<h1>Expenses</h1>
+		{#each $expenses as expense}
+			<ExpenseItem info={expense} />
+		{:else}
+			<h3>No Expenses</h3>
+		{/each}
+		<p>Total: {$sumAmmounts.toFixed(2)} $</p>
+	</section>
 </div>
-
-<div class="add-expense"><AddExpense {data} /></div>
 
 <style>
 	.table {
 		display: flex;
+		flex-wrap: wrap;
 		gap: 10px;
-		flex-direction: column;
+		justify-content: center;
 	}
 
-	.add-expense {
+	.add-expense,
+	.expenses-list {
 		padding: 2rem;
 		width: 100%;
+		max-width: 600px;
+		/* margin: auto; */
 	}
 
 	p {

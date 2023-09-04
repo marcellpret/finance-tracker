@@ -1,7 +1,6 @@
 <nav>
 	<a href="/expenses">Expenses</a>
 	<a href="/">Profile</a>
-	<a href="/home">Home</a>
 </nav>
 
 <style>
