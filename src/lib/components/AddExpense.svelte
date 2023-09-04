@@ -46,7 +46,7 @@
 		<input id="ammount" type="number" step="0.01" name="ammount" />
 
 		<label for="date">When?</label>
-		<input id="date" type="date" name="date" value="2019-05-05" />
+		<input id="date" type="date" name="date" value={date} />
 
 		<label for="category">Category</label>
 		<input list="category-choices" id="category" name="category" />
