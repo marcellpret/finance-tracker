@@ -1,7 +1,8 @@
 <script lang="ts">
-	import { expenses } from '$lib/store';
+	import { expenses, sumAmmounts } from '$lib/store';
 	import { supabase } from '$lib/supabaseClient';
 	import type { NewEntry } from '$lib/types';
+	import { categoryTypes } from '$lib/categories';
 
 	export let data;
 
@@ -13,20 +14,17 @@
 		user_id: data.session?.user.id!
 	};
 
-	const categoryIcons: {} = {
-		restaurant: '🍲',
-		groceries: '🛒',
-		tech: '🖥️',
-		clothing: '👔',
-		gifts: '🎁'
-	};
-
 	async function addExpense() {
 		const { data, error } = await supabase.from('expenses').insert([newEntry]).select('*');
 
 		if (error) console.log('Error in addExpense: ', error);
 		$expenses = [...$expenses!, data![0]];
 		newEntry = { ...newEntry, ammount: null!, entry: '', category: '' };
+
+		$sumAmmounts = $expenses.reduce((acc, expense) => {
+			acc += expense.ammount;
+			return acc;
+		}, 0);
 	}
 </script>
 
@@ -45,7 +43,7 @@
 		<input list="category-choices" id="category" name="category" bind:value={newEntry.category} />
 
 		<datalist id="category-choices">
-			{#each Object.keys(categoryIcons) as category}
+			{#each Object.keys(categoryTypes) as category}
 				<option value={category} />
 			{/each}
 		</datalist>

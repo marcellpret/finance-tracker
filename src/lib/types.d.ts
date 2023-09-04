@@ -6,18 +6,29 @@ export interface NewEntry {
 	user_id: string;
 }
 
+interface userDataType extends PageData {
+	tableData: Expense[];
+}
 export interface Expense {
 	ammount: number;
 	created_at: Date;
 	date: string;
 	entry: string;
-	id: number;
+	_id: number;
 	category: string;
+	user_id: string;
 }
 export interface Category {
+	[key: string]: any;
 	restaurant: string;
 	groceries: string;
-	tech: string;
+	eletronics: string;
 	clothing: string;
 	gifts: string;
+	sport: string;
+	beauty: string;
+	health: string;
+	education: string;
+	transport: string;
+	other: string;
 }
