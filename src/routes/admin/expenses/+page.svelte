@@ -37,7 +37,6 @@
 
 	.add-expense,
 	.expenses-list {
-		padding: 2rem;
 		width: 100%;
 		max-width: 600px;
 		/* margin: auto; */
