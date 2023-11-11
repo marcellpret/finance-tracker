@@ -69,15 +69,33 @@ export const actions: Actions = {
 
 	delete: async ({ request }) => {
 		console.log('DELETE');
-		const formData = await request.formData();
-		const expenseId = formData.get('expense-id');
-		console.log(expenseId);
-		await dbConnect();
-		await Expense.findByIdAndDelete(expenseId);
+		// const formData = await request.formData();
+		// const expenseId = formData.get('expense-id');
+		// console.log(expenseId);
+		// await dbConnect();
+		// await Expense.findByIdAndDelete(expenseId);
 
 		// console.log('Todo deleted: ', todoId);
 		return {
-			success: true
+			success: true,
+			message: 'Delete successful'
+		};
+	},
+
+	// create an edit action
+
+	edit: async ({ request }) => {
+		console.log('EDIT: ', await request.formData());
+		// const formData = await request.formData();
+		// const data = Object.fromEntries(formData);
+
+		// await dbConnect();
+		// const updatedEntry = await Expense.findByIdAndUpdate(data._id, data);
+
+		return {
+			success: true,
+			message: 'Edit successful'
+			// updatedEntry: JSON.parse(JSON.stringify(updatedEntry))
 		};
 	}
 };

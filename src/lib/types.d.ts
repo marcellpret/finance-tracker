@@ -16,7 +16,7 @@ export interface Expense {
 	created_at: Date;
 	date: string;
 	entry: string;
-	_id: number;
+	_id: string;
 	category: string;
 	user_id: string;
 }
